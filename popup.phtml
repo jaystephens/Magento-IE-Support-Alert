@@ -1,0 +1,33 @@
+<?php
+/**  @var $block \Magento\Framework\View\Element\Template */
+// $myBaseUrl = $this->getUrl('', ['_current' => true, '_use_rewrite' => true]);
+?>
+<div id="ieAlert" style="display:none;">
+    <span style="font-size:2.5em;"> We're sorry but the browser you are using is not currently supported. This site works best with Google Chrome, Mozilla Firefox, Apple Safari or Microsoft Edge browsers. </span>
+</div>
+<script>
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal'
+        ],
+        function($,modal) {
+            var isIE = !!navigator.userAgent.match(/Trident/g) || !!navigator.userAgent.match(/MSIE/g);
+            var options = {
+                type: 'popup',
+                responsive: true,
+                buttons: [{
+                    text: $.mage.__('Okay'),
+                    click: function () {
+                        this.closeModal();
+                        $.cookie("IeAcknowledge", "1", { expires: 1 });
+                    }
+                }]
+            };
+            if(isIE && !$.cookie('IeAcknowledge')){
+                var popup = modal(options, $('#ieAlert'));
+                $('#ieAlert').modal('openModal');    	
+            }
+        }   
+    );
+</script>
